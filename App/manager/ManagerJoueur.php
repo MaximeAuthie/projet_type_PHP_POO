@@ -70,7 +70,7 @@
 
                 //On retourne au contrôleur la variable contenant les résultat de la requête 
                 return $data;
-                
+
             } catch (\Exception $error) {
 
                 //En cas d'erreur, on retourne au contrôleur le message d'erreur capté 
@@ -78,6 +78,38 @@
 
             }
             
+        }
+
+        public function updatePlayer() {
+            try {
+                //On se connecte à la BDD via la méthode statique de la classe BddConnect
+                $bdd = BddConnect::connexion();
+
+                //On récupère les variables nécessaires à la requête
+                $id = $this->getId();
+                $pseudo = $this->getPseudo();
+                $mail = $this->getMail();
+
+                //préparation de la requête
+                $req = $bdd->prepare('UPDATE joueurs SET (pseudo_joueur = ?, mail_joueur = ?)  WHERE id_utilisateur = ?');
+
+                //Affection des variables
+                $req->bindParam(1, $pseudo, \PDO::PARAM_STR); 
+                $req->bindParam(2, $mail, \PDO::PARAM_STR);
+                $req->bindParam(3, $id, \PDO::PARAM_STR);
+
+                //Execution de la requête
+                $req->execute();
+
+                //Récupération des résultat de la requête dans une variable.
+                $data = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+                //On retourne au contrôleur la variable contenant les résultat de la requête 
+                return $data;
+                
+            } catch (\Exception $e) {
+                die ('Error: '.$e->getMessage());
+            }
         }
     }
 
