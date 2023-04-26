@@ -62,7 +62,42 @@
                 
                 //Execution de la requête
                 $req->execute();
+
+                //Récupération des résultat de la requête dans une variable.
+                $data = $req->fetchAll(\PDO::FETCH_ASSOC);
                 
+                //On retourne au contrôleur la variable contenant les résultat de la requête 
+                return $data;
+
+            } catch (\Exception $error) {
+
+                //En cas d'erreur, on retourne au contrôleur le message d'erreur capté 
+                die ('Error :'.$error->getMessage());
+
+            }
+        }
+
+        public function getCharacterById() {
+
+            try {
+
+                //On se connecte à la BDD via la méthode statitque de la classe BddConnect
+                $bdd = BddConnect::connexion();
+
+                //On récupère l'ID du joueur et le nom du personnage 
+                $playerId = $this->getIdJoueur();
+                $characterId = $this->getId();
+                
+                //Préparation de la requête
+                $req = $bdd->prepare('SELECT id_personnage, nom_personnage, id_joueur, personnages.id_classe FROM personnages WHERE id_joueur = ? AND id_personnage = ?');
+                    
+                //Affectation des variables
+                $req->bindParam(1, $playerId, \PDO::PARAM_INT);
+                $req->bindParam(2, $characterId, \PDO::PARAM_STR);
+                
+                //Execution de la requête
+                $req->execute();
+
                 //Récupération des résultat de la requête dans une variable.
                 $data = $req->fetchAll(\PDO::FETCH_ASSOC);
                 
@@ -114,5 +149,41 @@
 
             }
         }
-    }
+        
+            public function updateCharacterById() {
+                try {
+                    //On se connecte à la BDD via la méthode statique de la classe BddConnect
+                    $bdd = BddConnect::connexion();
+
+                    //On récupère les variables nécessaires à la requête
+                    $id = $this->getId();
+                    $name = $this->getNom();
+                    $class = $this->getClasse();
+                    $classId = $class->getId();
+                    $playerId = $this->getIdJoueur();
+
+                    //préparation de la requête
+                    $req = $bdd->prepare('UPDATE personnages SET nom_personnage = ?, id_joueur = ?, id_classe = ?  WHERE id_personnage = ?');
+
+                    //Affection des variables
+                    $req->bindParam(1, $name, \PDO::PARAM_STR); 
+                    $req->bindParam(2, $playerId, \PDO::PARAM_INT);
+                    $req->bindParam(3, $classId, \PDO::PARAM_INT);
+                    $req->bindParam(4, $id, \PDO::PARAM_INT);
+
+                    //Execution de la requête
+                    $req->execute();
+
+                    //Récupération des résultat de la requête dans une variable.
+                    $data = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+                    //On retourne au contrôleur la variable contenant les résultat de la requête 
+                    return $data;
+                    
+                } catch (\Exception $e) {
+                    die ('Error: '.$e->getMessage());
+                }
+
+        }
+}
 ?>

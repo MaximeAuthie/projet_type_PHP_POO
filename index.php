@@ -49,6 +49,10 @@ if(isset($_SESSION['connected'])) {
         case '/adrar-exo-php/exo-revision/addCharacter':
             $characterController->newCharacter();
             break;
+        case mb_strpos($path,'/adrar-exo-php/exo-revision/updateCharacter') !== false:
+            $id = substr($path,44);
+            $characterController->updateCharacter($id);
+            break;
         case '/adrar-exo-php/exo-revision/logout':
             $logoutController->logout();
             break;
