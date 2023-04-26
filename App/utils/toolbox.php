@@ -53,7 +53,14 @@
                 case 11:
                     return '<br><div class="alert alert-success w-50 mx-auto mt-3 text-center" role="alert">Le personnage '.$name.' a bien été créé.</div>';
                     break;
-    
+                
+                case 12:
+                    return '<br><div class="alert alert-success w-50 mx-auto mt-3 text-center" role="alert">Le personnage '.$name.' a bien été mis à jour.</div>';
+                    break;
+
+                case 13:
+                    return '<br><div class="alert alert-danger w-50 mx-auto mt-3 text-center" role="alert">Le personnage '.$name.' n\'existe pas dans la base de donnée.</div>';
+                    break;
                 default:
                     return '<br><div class="alert alert-danger w-50 mx-auto text-center" role="alert">Erreur inconnue. Veuillez réessayer plus tard;</div>';
                     break;
